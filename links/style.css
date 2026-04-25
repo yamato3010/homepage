@@ -28,12 +28,12 @@ body::before {
     right: 0;
     bottom: 0;
     z-index: -1;
-    background: url("assets/background.png") center center / cover no-repeat;
+    background: url("assets/background.jpg") center center / cover no-repeat;
 }
 
 @media (max-width: 768px) {
     body::before {
-        background-image: url("assets/background-for-phone.png");
+        background-image: url("assets/background-for-phone.jpg");
     }
 }
 
