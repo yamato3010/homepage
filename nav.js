@@ -3,9 +3,9 @@
 
   var items = [
     { href: '/index.html',                label: 'トップページ' },
-    { href: '',                            label: '創作物(工事中)' },
+    { href: '/works.html',                 label: '制作物' },
     { href: '/blog.html',                  label: '個人ブログ' },
-    { href: '',                            label: '画廊(工事中)' },
+    { href: '/gallery.html',               label: '画廊' },
     { href: '/links/index.html',           label: 'リンク集' },
     { href: 'https://yamatoblog.hateblo.jp/', label: '大和ノ畢生載録(ﾔﾏﾄﾉﾋｯｾｲｻｲﾛｸ)', external: true },
     { href: 'https://x.com/yamato_vr',        label: 'X(旧ツイッター)',               external: true },

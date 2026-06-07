@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>yamato3010の画廊</title>
+  <style type="text/css">
+
+    /* ===== ベース ===== */
+    body {
+      background-color: #e7e0ff;
+      color: #222222;
+      font-family: "ＭＳ 明朝", "MS Mincho", serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    a { color: #5500cc; }
+    a:visited { color: #880088; }
+
+    hr {
+      border: none;
+      border-top: 2px groove #a982f8;
+      margin: 10px 0;
+    }
+
+    /* ===== ヘッダー ===== */
+    #header {
+      background-color: #d0c4ff;
+      border-bottom: 3px ridge #a982f8;
+      padding: 10px 16px 6px 16px;
+    }
+
+    #header h1 {
+      margin: 0 0 4px 0;
+      font-size: 22px;
+      color: #4400aa;
+    }
+
+    #header p {
+      margin: 0;
+      font-size: 12px;
+      color: #555555;
+    }
+
+    #nav-bar {
+      margin: 6px 0 0 0;
+      font-size: 13px;
+    }
+
+    /* ===== ギャラリー本体 ===== */
+    #gallery-wrap {
+      width: 95%;
+      max-width: 1100px;
+      margin: 16px auto;
+    }
+
+    /* セクション見出し */
+    .section-title {
+      font-size: 15px;
+      font-weight: bold;
+      color: #330088;
+      border-left: 5px solid #a982f8;
+      border-bottom: 1px solid #c0b0ff;
+      padding: 3px 0 3px 8px;
+      margin: 20px 0 10px 0;
+      background: #ece7ff;
+    }
+
+    /* グリッド */
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 12px;
+    }
+
+    /* 1枚のカード */
+    .photo-card {
+      border: 3px ridge #a982f8;
+      background: #ffffff;
+      padding: 6px;
+      text-align: center;
+    }
+
+    .photo-card a {
+      display: block;
+      text-decoration: none;
+    }
+
+    .photo-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      display: block;
+      border: 1px solid #ccbbff;
+      background: #f0ecff;
+    }
+
+    /* 画像がまだ無いときのプレースホルダー */
+    .photo-placeholder {
+      width: 100%;
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #ece7ff;
+      border: 1px dashed #9977cc;
+      color: #9977cc;
+      font-size: 12px;
+      box-sizing: border-box;
+    }
+
+    .photo-card .caption {
+      font-size: 11px;
+      color: #444444;
+      margin-top: 5px;
+      line-height: 1.4;
+      text-align: left;
+    }
+
+    .photo-card .date {
+      font-size: 10px;
+      color: #888888;
+    }
+
+    /* ===== フッター ===== */
+    #footer {
+      color: #555555;
+      margin-top: 20px;
+      margin-bottom: 10px;
+      text-align: center;
+      font-size: 11px;
+    }
+
+    /* ===== lightbox 風オーバーレイ (CSS only) ===== */
+    /*
+      <a href="#lb-id"> でカードをクリック → :target でオーバーレイ表示
+    */
+    .lb-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.82);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    .lb-overlay:target {
+      display: flex;
+    }
+
+    .lb-overlay img {
+      max-width: 90vw;
+      max-height: 80vh;
+      border: 4px ridge #a982f8;
+      box-shadow: 0 0 30px #000;
+    }
+
+    .lb-overlay .lb-caption {
+      color: #eeeeee;
+      font-size: 13px;
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    .lb-overlay .lb-close {
+      position: fixed;
+      top: 12px;
+      right: 18px;
+      font-size: 28px;
+      color: #ffffff;
+      text-decoration: none;
+      line-height: 1;
+    }
+
+    .lb-overlay .lb-close:hover {
+      color: #ffccff;
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- ヘッダー -->
+  <div id="header">
+    <h1>🖼 yamato3010の画廊</h1>
+    <p>VRChatで撮った写真とかいろいろ展示しています。</p>
+    <div id="nav-bar">
+      <script src="/nav.js"></script>
+    </div>
+  </div>
+
+  <br>
+  <!-- キャラクターアイコン + テキスト -->
+  <div style="width: 90%; margin: 0 auto; display: flex; align-items: center; gap: 16px; padding: 12px 0;">
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; flex-shrink: 0;">
+      <img src="/assets/icons/shion.webp" alt="shion"
+        style="width: 60px; height: 60px; border: 5px ridge; object-fit: cover;">
+      <span style="font-size: 12px; color: #555;">紫桜</span>
+    </div>
+    <span style="font-size: 15px; color: #333; font-style: italic;">こんにちは！</span>
+  </div>
+
+  <!-- ギャラリー本体 -->
+  <div id="gallery-wrap">
+
+    <!-- ★ セクション：VRChat スクリーンショット -->
+    <div class="section-title">★ VRChat スクリーンショット</div>
+    <div class="photo-grid">
+
+      <!--
+        写真の追加方法:
+        1. 画像ファイルを /gallery/img/ などに置く
+        2. 下のカードをコピーして src と caption を書き換える
+        3. id="lb-XX" と href="#lb-XX" のXXを連番で合わせる
+
+        例:
+        <div class="photo-card">
+          <a href="#lb-01">
+            <img src="/gallery/img/001.jpg" alt="ワールド名など">
+          </a>
+          <div class="caption">
+            ワールド名やコメント<br>
+            <span class="date">2026/06/07</span>
+          </div>
+        </div>
+
+        ・lightboxオーバーレイも追加する場合は下のlightboxセクションにも同様に追加する
+      -->
+
+      <!-- サンプル（まだ画像なし）-->
+      <div class="photo-card">
+        <div class="photo-placeholder">写真を追加してね</div>
+        <div class="caption">
+          ここにキャプションを書く<br>
+          <span class="date">yyyy/mm/dd</span>
+        </div>
+      </div>
+
+      <div class="photo-card">
+        <div class="photo-placeholder">写真を追加してね</div>
+        <div class="caption">
+          ここにキャプションを書く<br>
+          <span class="date">yyyy/mm/dd</span>
+        </div>
+      </div>
+
+      <div class="photo-card">
+        <div class="photo-placeholder">写真を追加してね</div>
+        <div class="caption">
+          ここにキャプションを書く<br>
+          <span class="date">yyyy/mm/dd</span>
+        </div>
+      </div>
+
+    </div><!-- /.photo-grid -->
+
+    <!-- ★ セクション：その他 -->
+    <div class="section-title">★ その他</div>
+    <div class="photo-grid">
+
+      <div class="photo-card">
+        <div class="photo-placeholder">写真を追加してね</div>
+        <div class="caption">
+          ここにキャプションを書く<br>
+          <span class="date">yyyy/mm/dd</span>
+        </div>
+      </div>
+
+    </div><!-- /.photo-grid -->
+
+  </div><!-- /#gallery-wrap -->
+
+  <!--
+    ===== CSS-only lightbox オーバーレイ =====
+    写真カードと1対1で対応。id="lb-XX" を合わせること。
+    画像を追加したらここにも追記する。
+
+    <div class="lb-overlay" id="lb-01">
+      <a href="#" class="lb-close">✕</a>
+      <img src="/gallery/img/001.jpg" alt="ワールド名など">
+      <div class="lb-caption">ワールド名やコメント</div>
+    </div>
+  -->
+
+  <hr>
+  <div id="footer">
+    Copyright &copy; yamato3010 |
+    <a href="/index.html">トップ</a> |
+    <a href="/works.html">制作物</a> |
+    <a href="/blog.html">ブログ</a> |
+    <a href="/links/index.html">リンク</a>
+  </div>
+
+</body>
+</html>
