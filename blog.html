@@ -1,132 +1,173 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html lang="ja">
+
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>yamato3010の個人ブログ</title>
-<style type="text/css">
-body {
-  background-color: #ffffff;
-  color: #000000;
-  font-family: "ＭＳ 明朝", "MS Mincho", serif;
-  margin: 4px;
-}
-a { color: #0000cc; }
-a:visited { color: #800080; }
-hr { border: none; border-top: 1px solid #000000; margin: 6px 0; }
-h1 { margin: 4px 0; }
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>yamato3010の個人ブログ</title>
+  <style type="text/css">
+    body {
+      background-color: #ffffff;
+      color: #000000;
+      font-family: "ＭＳ 明朝", "MS Mincho", serif;
+      margin: 4px;
+    }
 
-#nav { margin-bottom: 6px; }
-#nav a { margin-right: 4px; }
+    a {
+      color: #0000cc;
+    }
 
-/* 記事一覧 */
-#post-list {
-  border: 3px ridge #999999;
-  padding: 6px 8px;
-}
-.post-item { margin-bottom: 4px; }
-.post-item:last-child { margin-bottom: 0; }
-.post-date { color: #555555; margin-right: 6px; }
+    a:visited {
+      color: #800080;
+    }
 
-/* ページング */
-#pagination { margin-top: 8px; }
-#pagination a { margin-right: 8px; }
+    hr {
+      border: none;
+      border-top: 1px solid #000000;
+      margin: 6px 0;
+    }
 
-#footer { color: #555555; margin-top: 12px; text-align: center; }
-</style>
+    h1 {
+      margin: 4px 0;
+    }
+
+    #nav {
+      margin-bottom: 6px;
+    }
+
+    #nav a {
+      margin-right: 4px;
+    }
+
+    /* 記事一覧 */
+    #post-list {
+      border: 3px ridge #999999;
+      padding: 6px 8px;
+    }
+
+    .post-item {
+      margin-bottom: 4px;
+    }
+
+    .post-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .post-date {
+      color: #555555;
+      margin-right: 6px;
+    }
+
+    /* ページング */
+    #pagination {
+      margin-top: 8px;
+    }
+
+    #pagination a {
+      margin-right: 8px;
+    }
+
+    #footer {
+      color: #555555;
+      margin-top: 12px;
+      text-align: center;
+    }
+  </style>
 </head>
+
 <body>
 
-<h1>個人ブログ</h1>
-<div id="nav">
-  <script src="/nav.js"></script><br>
-</div>
-<hr>
+  <h1>yamato3010の個人ブログ</h1>
+  <div id="nav">
+    <script src="/nav.js"></script><br>
+  </div>
+  <hr>
 
-<p id="loading" style="color:#555555;">読み込み中...</p>
-<div id="post-list"></div>
-<div id="pagination"></div>
+  <p id="loading" style="color:#555555;">読み込み中...</p>
+  <div id="post-list"></div>
+  <div id="pagination"></div>
 
-<hr>
-<div id="footer">Copyright &copy; yamato3010</div>
+  <hr>
+  <div id="footer">Copyright &copy; yamato3010</div>
 
-<script type="text/javascript">
-  var POSTS_PER_PAGE = 15;
-  var allPosts = [];
-  var currentPage = 1;
+  <script type="text/javascript">
+    var POSTS_PER_PAGE = 15;
+    var allPosts = [];
+    var currentPage = 1;
 
-  window.onload = function() {
-    loadPosts();
-  };
+    window.onload = function () {
+      loadPosts();
+    };
 
-  function loadPosts() {
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', './blog/posts.json', true);
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState !== 4) return;
-      document.getElementById('loading').style.display = 'none';
-      if (xhr.status === 200 || xhr.status === 0) {
-        try {
-          var data = JSON.parse(xhr.responseText);
-          allPosts = (data.posts || []).sort(function(a, b) {
-            return b.date.localeCompare(a.date);
-          });
-          renderPostList(1);
-        } catch(e) {
-          document.getElementById('loading').textContent = 'エラー: ' + e.message;
+    function loadPosts() {
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', './blog/posts.json', true);
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState !== 4) return;
+        document.getElementById('loading').style.display = 'none';
+        if (xhr.status === 200 || xhr.status === 0) {
+          try {
+            var data = JSON.parse(xhr.responseText);
+            allPosts = (data.posts || []).sort(function (a, b) {
+              return b.date.localeCompare(a.date);
+            });
+            renderPostList(1);
+          } catch (e) {
+            document.getElementById('loading').textContent = 'エラー: ' + e.message;
+            document.getElementById('loading').style.display = 'block';
+          }
+        } else {
+          document.getElementById('loading').textContent = '記事一覧の取得に失敗しました';
           document.getElementById('loading').style.display = 'block';
         }
-      } else {
-        document.getElementById('loading').textContent = '記事一覧の取得に失敗しました';
-        document.getElementById('loading').style.display = 'block';
-      }
-    };
-    xhr.send();
-  }
-
-  function renderPostList(page) {
-    currentPage = page;
-    var container = document.getElementById('post-list');
-    container.innerHTML = '';
-
-    var start = (page - 1) * POSTS_PER_PAGE;
-    var pagePosts = allPosts.slice(start, start + POSTS_PER_PAGE);
-
-    if (pagePosts.length === 0) {
-      container.innerHTML = '<p style="color:#555555;">記事がありません。</p>';
-      return;
+      };
+      xhr.send();
     }
 
-    pagePosts.forEach(function(p) {
-      var div = document.createElement('div');
-      div.className = 'post-item';
-      div.innerHTML = '<span class="post-date">' + escapeHtml(p.date) + '</span>'
-        + '<a href="/blog/' + p.path + '">' + escapeHtml(p.title) + '</a>';
-      container.appendChild(div);
-    });
+    function renderPostList(page) {
+      currentPage = page;
+      var container = document.getElementById('post-list');
+      container.innerHTML = '';
 
-    var total = Math.ceil(allPosts.length / POSTS_PER_PAGE);
-    var pag = document.getElementById('pagination');
-    pag.innerHTML = '';
-    if (total > 1) {
-      if (currentPage > 1) {
-        var prev = document.createElement('a');
-        prev.href = '#'; prev.textContent = '← 前のページ';
-        prev.onclick = function() { renderPostList(currentPage - 1); return false; };
-        pag.appendChild(prev);
+      var start = (page - 1) * POSTS_PER_PAGE;
+      var pagePosts = allPosts.slice(start, start + POSTS_PER_PAGE);
+
+      if (pagePosts.length === 0) {
+        container.innerHTML = '<p style="color:#555555;">記事がありません。</p>';
+        return;
       }
-      if (currentPage < total) {
-        var next = document.createElement('a');
-        next.href = '#'; next.textContent = '次のページ →';
-        next.onclick = function() { renderPostList(currentPage + 1); return false; };
-        pag.appendChild(next);
+
+      pagePosts.forEach(function (p) {
+        var div = document.createElement('div');
+        div.className = 'post-item';
+        div.innerHTML = '<span class="post-date">' + escapeHtml(p.date) + '</span>'
+          + '<a href="/blog/' + p.path + '">' + escapeHtml(p.title) + '</a>';
+        container.appendChild(div);
+      });
+
+      var total = Math.ceil(allPosts.length / POSTS_PER_PAGE);
+      var pag = document.getElementById('pagination');
+      pag.innerHTML = '';
+      if (total > 1) {
+        if (currentPage > 1) {
+          var prev = document.createElement('a');
+          prev.href = '#'; prev.textContent = '← 前のページ';
+          prev.onclick = function () {renderPostList(currentPage - 1); return false;};
+          pag.appendChild(prev);
+        }
+        if (currentPage < total) {
+          var next = document.createElement('a');
+          next.href = '#'; next.textContent = '次のページ →';
+          next.onclick = function () {renderPostList(currentPage + 1); return false;};
+          pag.appendChild(next);
+        }
       }
     }
-  }
 
-  function escapeHtml(s) {
-    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-  }
-</script>
+    function escapeHtml(s) {
+      return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+  </script>
 
 </body>
+
 </html>
